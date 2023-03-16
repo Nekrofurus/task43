@@ -20,8 +20,7 @@ double UserInput(string massage)
     double result = Convert.ToDouble(value);
     return result;
 }
-double[] inputLine1 = InputLine(1);
-double[] inputLine2 = InputLine(2);
+
 
 bool ValidateLines(double[] inputLine1, double[] inputLine2)
 {
@@ -40,43 +39,42 @@ bool ValidateLines(double[] inputLine1, double[] inputLine2)
     }
     return true;
 }
-double[] lineIntersectionPoint = LineIntersectionPoint(inputLine1, inputLine2);
+
 double[] LineIntersectionPoint(double[] inputLine1, double[] inputLine2)
 {
     double[] linIsPoint = new double[2];
-    linIsPoint[x] = (inputLine2[b] - inputLine1[b]) / (inputLine1[k] - inputLine2[k]);
-    linIsPoint[y] = inputLine1[k] * linIsPoint[x] + inputLine1[b];
+    linIsPoint[x] = Math.Round((inputLine2[b] - inputLine1[b]) / (inputLine1[k] - inputLine2[k]), 2);
+    linIsPoint[y] = Math.Round(inputLine1[k] * linIsPoint[x] + inputLine1[b], 2);
     return linIsPoint;
 }
-void PrintArray(double[] array)
+void PrinteEquationLine(double[] inputLine)
 {
-Console.Write($"Для уравнений: ");
-if (inputLine1[k] == 0)
-{
-    if (inputLine1[b] == 0)
+    if (inputLine[k] == 0 && inputLine[b] == 0)
     {
         Console.Write("y = 0");
     }
-    else
+    else if (inputLine[k] != 0 && inputLine[b] < 0)
     {
-        Console.Write($"Для уравнений: y = {inputLine1[k]}x");
+        Console.Write($"y = {inputLine[k]}x - {inputLine[b] * -1}");
     }
-    Console.Write($"Для уравнений: y = {inputLine1[k]}x + {inputLine1[b]}");
+    else if (inputLine[k] != 0 && inputLine[b] > 0)
+    {
+        Console.Write($"y = {inputLine[k]}x + {inputLine[b]}");
+    }
+    else if (inputLine[k] != 0 && inputLine[b] == 0)
+    {
+        Console.Write($"y = {inputLine[k]}x");
+    }
+    else if (inputLine[k] == 0 && inputLine[b] != 0)
+    {
+        Console.Write($"y = {inputLine[b]}");
+    }
 }
-if (inputLine2[k] == 0)
+
+
+void PrintArray(double[] array)
 {
-    if (inputLine2[b] == 0)
-    {
-        Console.Write(" и y = 0");
-    }
-    else
-    {
-        Console.Write($" и y = {inputLine1[k]}x");
-    }
-    Console.Write($" и y = {inputLine1[k]}x + {inputLine1[b]}");
-}
-Console.Write($" и y = {inputLine1[k]}x + {inputLine1[b]} и y = {inputLine2[k]}x + {inputLine2[b]}");
-Console.Write("координаты пересечения {");
+    Console.Write(" координаты пересечения: {");
     for (int i = 0; i < array.Length - 1; i++)
     {
         Console.Write($"{array[i]}, ");
@@ -84,6 +82,13 @@ Console.Write("координаты пересечения {");
     Console.Write($"{array[array.Length - 1]}");
     Console.Write("}");
 }
+double[] inputLine1 = InputLine(1);
+double[] inputLine2 = InputLine(2);
+double[] lineIntersectionPoint = LineIntersectionPoint(inputLine1, inputLine2);
+Console.Write($"Для уравнений: ");
+PrinteEquationLine(inputLine1);
+Console.Write($" и ");
+PrinteEquationLine(inputLine2);
 if (ValidateLines(inputLine1, inputLine2))
 {
     PrintArray(lineIntersectionPoint);
